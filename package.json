@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "@noriginmedia/norigin-spatial-navigation": "^2.1.0",
+    "@xdproto/focus": "^2.0.0-beta.13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.9.6",

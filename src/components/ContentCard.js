@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFocusable, getCurrentFocusKey } from '@noriginmedia/norigin-spatial-navigation';
 
-function ContentCard({ item, onFocus }) {
+function ContentCard({ item, rowId, cardIndex, onFocus }) {
   const navigate = useNavigate();
 
   const handleSelect = useCallback(() => {
@@ -29,7 +29,7 @@ function ContentCard({ item, onFocus }) {
         });
       }
     },
-    focusKey: `card-${item.id}`
+    focusKey: `${rowId}-card-${cardIndex}`
   });
 
   return (
@@ -38,6 +38,7 @@ function ContentCard({ item, onFocus }) {
       className={`content-card ${focused ? 'focused' : ''}`}
       onClick={handleSelect}
       data-focusable="true"
+      data-focus-key={`${rowId}-card-${cardIndex}`}
       tabIndex={focused ? 0 : -1}
     >
       <div className="card-image-container">

@@ -7,6 +7,7 @@ import {
   setFocus,
   getCurrentFocusKey
 } from '@noriginmedia/norigin-spatial-navigation';
+import { useRailFirstNavigation } from './hooks/useRailFirstNavigation';
 import Navigation from './components/Navigation';
 import HomePage from './pages/HomePage';
 import MoviesPage from './pages/MoviesPage';
@@ -27,6 +28,9 @@ function AppContent() {
   const location = useLocation();
   const previousFocusKeyRef = useRef(null);
   const wasOnDetailPageRef = useRef(false);
+
+  // Enable rail-first navigation
+  useRailFirstNavigation();
 
   const { ref, focusKey } = useFocusable({
     focusable: false,

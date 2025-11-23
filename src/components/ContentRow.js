@@ -10,6 +10,7 @@ function ContentRow({ title, items, rowId }) {
     focusable: false,
     trackChildren: true,
     isFocusBoundary: false,
+    saveLastFocusedChild: true,
     focusKey: rowId
   });
 
@@ -44,10 +45,12 @@ function ContentRow({ title, items, rowId }) {
     <div ref={setRefs} className="content-row">
       <h2 className="row-title">{title}</h2>
       <div className="row-content" ref={scrollContainerRef}>
-        {items.map((item) => (
+        {items.map((item, index) => (
           <ContentCard
             key={item.id}
             item={item}
+            rowId={rowId}
+            cardIndex={index}
             onFocus={onCardFocus}
           />
         ))}
