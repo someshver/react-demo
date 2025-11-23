@@ -8,6 +8,7 @@ function TVShowsPage() {
     focusable: false,
     saveLastFocusedChild: true,
     trackChildren: true,
+    isFocusBoundary: false,
     focusKey: 'TVSHOWS_PAGE'
   });
 

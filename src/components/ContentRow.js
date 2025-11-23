@@ -11,6 +11,7 @@ function ContentRow({ title, items, rowId }) {
     saveLastFocusedChild: true,
     trackChildren: true,
     autoRestoreFocus: true,
+    isFocusBoundary: false,
     focusKey: rowId
   });
 
