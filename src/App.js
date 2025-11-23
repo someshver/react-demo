@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { init, useFocusable, FocusContext } from '@noriginmedia/norigin-spatial-navigation';
+import { init, useFocusable, FocusContext, setFocus } from '@noriginmedia/norigin-spatial-navigation';
 import Navigation from './components/Navigation';
 import HomePage from './pages/HomePage';
 import MoviesPage from './pages/MoviesPage';
@@ -19,23 +19,30 @@ function AppContent() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { ref, focusKey } = useFocusable({
+  const { ref, focusKey, focusSelf } = useFocusable({
     focusable: false,
     saveLastFocusedChild: true,
     trackChildren: true,
-    autoRestoreFocus: true
+    autoRestoreFocus: true,
+    isFocusBoundary: false
   });
 
+  // Set focus when app mounts or route changes
   useEffect(() => {
-    // Focus the first element when app mounts or route changes
     const timer = setTimeout(() => {
-      const firstFocusable = document.querySelector('[data-focusable="true"]');
-      if (firstFocusable) {
-        firstFocusable.focus();
-      }
+      // Try to focus the first content card in the first row
+      setFocus('home-trending');
+    }, 200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Refocus when route changes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      focusSelf();
     }, 100);
     return () => clearTimeout(timer);
-  }, [location.pathname]);
+  }, [location.pathname, focusSelf]);
 
   // Handle TV remote back button
   useEffect(() => {
@@ -77,18 +84,6 @@ function AppContent() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [navigate, location.pathname]);
-
-  // Prevent default browser scrolling with arrow keys
-  useEffect(() => {
-    const preventScroll = (e) => {
-      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-        e.preventDefault();
-      }
-    };
-
-    window.addEventListener('keydown', preventScroll);
-    return () => window.removeEventListener('keydown', preventScroll);
-  }, []);
 
   return (
     <FocusContext.Provider value={focusKey}>

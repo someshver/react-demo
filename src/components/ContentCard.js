@@ -11,9 +11,18 @@ function ContentCard({ item, onFocus }) {
 
   const { ref, focused } = useFocusable({
     onEnterPress: handleSelect,
-    onFocus: ({ x, y }) => {
+    onFocus: ({ x, y, node }) => {
       onFocus({ x, y });
-    }
+      // Scroll the card into view when focused
+      if (node) {
+        node.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center'
+        });
+      }
+    },
+    focusKey: `card-${item.id}`
   });
 
   return (
@@ -22,7 +31,7 @@ function ContentCard({ item, onFocus }) {
       className={`content-card ${focused ? 'focused' : ''}`}
       onClick={handleSelect}
       data-focusable="true"
-      tabIndex={0}
+      tabIndex={focused ? 0 : -1}
     >
       <div className="card-image-container">
         <img
