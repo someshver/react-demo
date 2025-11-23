@@ -4,24 +4,25 @@ import ContentCard from './ContentCard';
 
 function ContentRow({ title, items, rowId }) {
   const scrollContainerRef = useRef(null);
-  const rowRef = useRef(null);
+  const rowElementRef = useRef(null);
 
   const { ref, focusKey } = useFocusable({
     focusable: false,
     saveLastFocusedChild: true,
     trackChildren: true,
     autoRestoreFocus: true,
-    focusKey: rowId,
-    onFocus: () => {
-      // Scroll the row into view when any card in this row gets focus
-      if (rowRef.current) {
-        rowRef.current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center'
-        });
-      }
-    }
+    focusKey: rowId
   });
+
+  // Combine refs
+  const setRefs = useCallback((el) => {
+    rowElementRef.current = el;
+    if (typeof ref === 'function') {
+      ref(el);
+    } else if (ref) {
+      ref.current = el;
+    }
+  }, [ref]);
 
   const onCardFocus = useCallback(({ x }) => {
     // Horizontal scroll within the row
@@ -31,11 +32,18 @@ function ContentRow({ title, items, rowId }) {
         behavior: 'smooth'
       });
     }
+    // Vertical scroll to keep row in view
+    if (rowElementRef.current) {
+      rowElementRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'
+      });
+    }
   }, []);
 
   return (
     <FocusContext.Provider value={focusKey}>
-      <div ref={(el) => { ref(el); rowRef.current = el; }} className="content-row">
+      <div ref={setRefs} className="content-row">
         <h2 className="row-title">{title}</h2>
         <div className="row-content" ref={scrollContainerRef}>
           {items.map((item) => (
