@@ -40,19 +40,20 @@ function AppContent() {
   // Get the default focus key based on current route
   const getDefaultFocusKey = useCallback(() => {
     const path = location.pathname;
-    if (path === '/') return 'NAV_HOME';
-    if (path === '/movies') return 'NAV_MOVIES';
-    if (path === '/tv-shows') return 'NAV_TVSHOWS';
-    if (path === '/my-list') return 'NAV_MYLIST';
+    // Focus on page content instead of navigation to allow proper vertical navigation
+    if (path === '/') return 'HERO_PLAY';
+    if (path === '/movies') return 'MOVIES_PAGE';
+    if (path === '/tv-shows') return 'TVSHOWS_PAGE';
+    if (path === '/my-list') return 'MYLIST_PAGE';
     if (path.startsWith('/detail/')) return 'DETAIL_PAGE';
-    return 'NAV_HOME';
+    return 'HERO_PLAY';
   }, [location.pathname]);
 
   // Set focus when app mounts
   useEffect(() => {
     const timer = setTimeout(() => {
       setFocus(getDefaultFocusKey());
-    }, 300);
+    }, 50);
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -75,7 +76,7 @@ function AppContent() {
         } else {
           setFocus(getDefaultFocusKey());
         }
-      }, 300);
+      }, 50);
       wasOnDetailPageRef.current = false;
       return () => clearTimeout(timer);
     }
@@ -84,8 +85,8 @@ function AppContent() {
     if (isOnDetailPage) {
       wasOnDetailPageRef.current = true;
       const timer = setTimeout(() => {
-        setFocus('DETAIL_PAGE');
-      }, 300);
+        setFocus('DETAIL_PLAY_BTN');
+      }, 50);
       return () => clearTimeout(timer);
     }
   }, [location.pathname, location.state, getDefaultFocusKey]);

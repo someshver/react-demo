@@ -25,7 +25,7 @@ function ContentCard({ item, onFocus }) {
         node.scrollIntoView({
           behavior: 'auto',
           block: 'nearest',
-          inline: 'center'
+          inline: 'end'
         });
       }
     },

@@ -1,10 +1,11 @@
 import React from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { useFocusable, FocusContext } from '@noriginmedia/norigin-spatial-navigation';
+import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 
-function ActionButton({ label, primary, onSelect }) {
+function ActionButton({ label, primary, onSelect, focusKey }) {
   const { ref, focused } = useFocusable({
-    onEnterPress: onSelect
+    onEnterPress: onSelect,
+    focusKey
   });
 
   return (
@@ -30,6 +31,7 @@ function DetailPage() {
     focusable: false,
     saveLastFocusedChild: true,
     trackChildren: true,
+    preferredChildFocusKey: 'DETAIL_PLAY_BTN',
     focusKey: 'DETAIL_PAGE'
   });
 
@@ -57,52 +59,50 @@ function DetailPage() {
   };
 
   return (
-    <FocusContext.Provider value={focusKey}>
-      <div ref={ref} className="detail-page">
-        <div
-          className="detail-hero"
-          style={{
-            backgroundImage: `linear-gradient(to right, rgba(20, 20, 20, 1) 0%, rgba(20, 20, 20, 0.8) 40%, rgba(20, 20, 20, 0.4) 100%), url(${item.image.replace('300/450', '1920/1080')})`
-          }}
-        >
-          <div className="detail-content">
-            <h1 className="detail-title">{item.title}</h1>
+    <div ref={ref} className="detail-page">
+      <div
+        className="detail-hero"
+        style={{
+          backgroundImage: `linear-gradient(to right, rgba(20, 20, 20, 1) 0%, rgba(20, 20, 20, 0.8) 40%, rgba(20, 20, 20, 0.4) 100%), url(${item.image.replace('300/450', '1920/1080')})`
+        }}
+      >
+        <div className="detail-content">
+          <h1 className="detail-title">{item.title}</h1>
 
-            <div className="detail-meta">
-              <span className="detail-rating">{item.rating}</span>
-              <span className="detail-year">{item.year}</span>
-              <span className="detail-genre">{item.genre}</span>
-              <span className="detail-duration">2h 15m</span>
-            </div>
+          <div className="detail-meta">
+            <span className="detail-rating">{item.rating}</span>
+            <span className="detail-year">{item.year}</span>
+            <span className="detail-genre">{item.genre}</span>
+            <span className="detail-duration">2h 15m</span>
+          </div>
 
-            <p className="detail-description">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-              irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            </p>
+          <p className="detail-description">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          </p>
 
-            <div className="detail-info">
-              <p><strong>Director:</strong> John Smith</p>
-              <p><strong>Cast:</strong> Actor One, Actor Two, Actor Three, Actor Four</p>
-              <p><strong>Audio:</strong> English, Spanish, French</p>
-              <p><strong>Subtitles:</strong> English, Spanish, French, German</p>
-            </div>
+          <div className="detail-info">
+            <p><strong>Director:</strong> John Smith</p>
+            <p><strong>Cast:</strong> Actor One, Actor Two, Actor Three, Actor Four</p>
+            <p><strong>Audio:</strong> English, Spanish, French</p>
+            <p><strong>Subtitles:</strong> English, Spanish, French, German</p>
+          </div>
 
-            <div className="detail-actions">
-              <ActionButton label="Play" primary onSelect={handlePlay} />
-              <ActionButton label="Add to List" onSelect={handleAddToList} />
-              <ActionButton label="Back" onSelect={handleBack} />
-            </div>
+          <div className="detail-actions">
+            <ActionButton label="Play" primary onSelect={handlePlay} focusKey="DETAIL_PLAY_BTN" />
+            <ActionButton label="Add to List" onSelect={handleAddToList} focusKey="DETAIL_ADD_BTN" />
+            <ActionButton label="Back" onSelect={handleBack} focusKey="DETAIL_BACK_BTN" />
           </div>
         </div>
-
-        <div className="detail-additional">
-          <h2>More Like This</h2>
-          <p className="coming-soon">Related content coming soon...</p>
-        </div>
       </div>
-    </FocusContext.Provider>
+
+      <div className="detail-additional">
+        <h2>More Like This</h2>
+        <p className="coming-soon">Related content coming soon...</p>
+      </div>
+    </div>
   );
 }
 
