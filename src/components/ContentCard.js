@@ -1,25 +1,26 @@
 import React, { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 
 function ContentCard({ item, onFocus }) {
+  const navigate = useNavigate();
+
+  const handleSelect = useCallback(() => {
+    navigate(`/detail/${item.id}`, { state: { item } });
+  }, [navigate, item]);
+
   const { ref, focused } = useFocusable({
-    onEnterPress: () => {
-      alert(`Selected: ${item.title}`);
-    },
+    onEnterPress: handleSelect,
     onFocus: ({ x, y }) => {
       onFocus({ x, y });
     }
   });
 
-  const handleClick = useCallback(() => {
-    alert(`Selected: ${item.title}`);
-  }, [item.title]);
-
   return (
     <div
       ref={ref}
       className={`content-card ${focused ? 'focused' : ''}`}
-      onClick={handleClick}
+      onClick={handleSelect}
       data-focusable="true"
       tabIndex={0}
     >

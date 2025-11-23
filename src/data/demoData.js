@@ -1,347 +1,114 @@
+// Helper function to generate items
+const generateItems = (prefix, startId, count, genres) => {
+  const titles = [
+    'The Last Kingdom', 'Cosmic Journey', 'Dark Waters', 'Mountain Echo', 'Neon Nights',
+    'Silent Storm', 'Crystal Maze', 'Urban Legends', 'Eternal Flame', 'Steel Thunder',
+    'Whispers', 'Golden Hour', 'Frozen Peak', 'Night Rider', 'Ocean Depths',
+    'City Lights', 'Phantom Code', 'Love Story', 'Desert Storm', 'Mind Games',
+    'Forest Tales', 'Speed Racers', 'Haunted', 'Royal Affairs', 'Planet Earth'
+  ];
+
+  return Array.from({ length: count }, (_, i) => ({
+    id: startId + i,
+    title: `${titles[i % titles.length]}${Math.floor(i / titles.length) > 0 ? ' ' + (Math.floor(i / titles.length) + 1) : ''}`,
+    image: `https://picsum.photos/seed/${prefix}${i + 1}/300/450`,
+    year: 2023 + (i % 2),
+    rating: (7 + Math.random() * 2.5).toFixed(1),
+    genre: genres[i % genres.length]
+  }));
+};
+
 export const demoData = {
   trending: {
     title: 'Trending Now',
-    items: [
-      {
-        id: 1,
-        title: 'The Last Kingdom',
-        image: 'https://picsum.photos/seed/movie1/300/450',
-        year: 2023,
-        rating: '8.5',
-        genre: 'Action'
-      },
-      {
-        id: 2,
-        title: 'Cosmic Journey',
-        image: 'https://picsum.photos/seed/movie2/300/450',
-        year: 2024,
-        rating: '9.1',
-        genre: 'Sci-Fi'
-      },
-      {
-        id: 3,
-        title: 'Dark Waters',
-        image: 'https://picsum.photos/seed/movie3/300/450',
-        year: 2023,
-        rating: '7.8',
-        genre: 'Thriller'
-      },
-      {
-        id: 4,
-        title: 'Mountain Echo',
-        image: 'https://picsum.photos/seed/movie4/300/450',
-        year: 2024,
-        rating: '8.2',
-        genre: 'Drama'
-      },
-      {
-        id: 5,
-        title: 'Neon Nights',
-        image: 'https://picsum.photos/seed/movie5/300/450',
-        year: 2023,
-        rating: '8.7',
-        genre: 'Action'
-      },
-      {
-        id: 6,
-        title: 'Silent Storm',
-        image: 'https://picsum.photos/seed/movie6/300/450',
-        year: 2024,
-        rating: '7.9',
-        genre: 'Drama'
-      },
-      {
-        id: 7,
-        title: 'Crystal Maze',
-        image: 'https://picsum.photos/seed/movie7/300/450',
-        year: 2023,
-        rating: '8.4',
-        genre: 'Adventure'
-      },
-      {
-        id: 8,
-        title: 'Urban Legends',
-        image: 'https://picsum.photos/seed/movie8/300/450',
-        year: 2024,
-        rating: '8.0',
-        genre: 'Horror'
-      }
-    ]
+    items: generateItems('trending', 1, 20, ['Action', 'Sci-Fi', 'Thriller', 'Drama', 'Adventure'])
   },
   popular: {
     title: 'Popular Movies',
-    items: [
-      {
-        id: 9,
-        title: 'Eternal Flame',
-        image: 'https://picsum.photos/seed/movie9/300/450',
-        year: 2023,
-        rating: '9.0',
-        genre: 'Romance'
-      },
-      {
-        id: 10,
-        title: 'Steel Thunder',
-        image: 'https://picsum.photos/seed/movie10/300/450',
-        year: 2024,
-        rating: '8.6',
-        genre: 'Action'
-      },
-      {
-        id: 11,
-        title: 'Whispers',
-        image: 'https://picsum.photos/seed/movie11/300/450',
-        year: 2023,
-        rating: '7.5',
-        genre: 'Mystery'
-      },
-      {
-        id: 12,
-        title: 'Golden Hour',
-        image: 'https://picsum.photos/seed/movie12/300/450',
-        year: 2024,
-        rating: '8.3',
-        genre: 'Drama'
-      },
-      {
-        id: 13,
-        title: 'Frozen Peak',
-        image: 'https://picsum.photos/seed/movie13/300/450',
-        year: 2023,
-        rating: '8.1',
-        genre: 'Adventure'
-      },
-      {
-        id: 14,
-        title: 'Night Rider',
-        image: 'https://picsum.photos/seed/movie14/300/450',
-        year: 2024,
-        rating: '7.7',
-        genre: 'Thriller'
-      },
-      {
-        id: 15,
-        title: 'Ocean Depths',
-        image: 'https://picsum.photos/seed/movie15/300/450',
-        year: 2023,
-        rating: '8.8',
-        genre: 'Documentary'
-      },
-      {
-        id: 16,
-        title: 'City Lights',
-        image: 'https://picsum.photos/seed/movie16/300/450',
-        year: 2024,
-        rating: '9.2',
-        genre: 'Comedy'
-      }
-    ]
+    items: generateItems('popular', 100, 20, ['Romance', 'Action', 'Mystery', 'Drama', 'Comedy'])
   },
   tvShows: {
     title: 'TV Shows',
-    items: [
-      {
-        id: 17,
-        title: 'The Crown',
-        image: 'https://picsum.photos/seed/show1/300/450',
-        year: 2023,
-        rating: '8.9',
-        genre: 'Drama'
-      },
-      {
-        id: 18,
-        title: 'Tech Giants',
-        image: 'https://picsum.photos/seed/show2/300/450',
-        year: 2024,
-        rating: '8.4',
-        genre: 'Documentary'
-      },
-      {
-        id: 19,
-        title: 'Mystery Manor',
-        image: 'https://picsum.photos/seed/show3/300/450',
-        year: 2023,
-        rating: '7.6',
-        genre: 'Mystery'
-      },
-      {
-        id: 20,
-        title: 'Space Odyssey',
-        image: 'https://picsum.photos/seed/show4/300/450',
-        year: 2024,
-        rating: '9.3',
-        genre: 'Sci-Fi'
-      },
-      {
-        id: 21,
-        title: 'Comedy Central',
-        image: 'https://picsum.photos/seed/show5/300/450',
-        year: 2023,
-        rating: '8.0',
-        genre: 'Comedy'
-      },
-      {
-        id: 22,
-        title: 'Wild Planet',
-        image: 'https://picsum.photos/seed/show6/300/450',
-        year: 2024,
-        rating: '8.7',
-        genre: 'Nature'
-      },
-      {
-        id: 23,
-        title: 'Crime Files',
-        image: 'https://picsum.photos/seed/show7/300/450',
-        year: 2023,
-        rating: '8.2',
-        genre: 'Crime'
-      },
-      {
-        id: 24,
-        title: 'Kitchen Wars',
-        image: 'https://picsum.photos/seed/show8/300/450',
-        year: 2024,
-        rating: '7.8',
-        genre: 'Reality'
-      }
-    ]
+    items: generateItems('tvshow', 200, 20, ['Drama', 'Documentary', 'Mystery', 'Sci-Fi', 'Comedy'])
   },
   newReleases: {
     title: 'New Releases',
-    items: [
-      {
-        id: 25,
-        title: 'Phantom Code',
-        image: 'https://picsum.photos/seed/new1/300/450',
-        year: 2024,
-        rating: '8.5',
-        genre: 'Thriller'
-      },
-      {
-        id: 26,
-        title: 'Love Story',
-        image: 'https://picsum.photos/seed/new2/300/450',
-        year: 2024,
-        rating: '7.9',
-        genre: 'Romance'
-      },
-      {
-        id: 27,
-        title: 'Desert Storm',
-        image: 'https://picsum.photos/seed/new3/300/450',
-        year: 2024,
-        rating: '8.1',
-        genre: 'Action'
-      },
-      {
-        id: 28,
-        title: 'Mind Games',
-        image: 'https://picsum.photos/seed/new4/300/450',
-        year: 2024,
-        rating: '8.8',
-        genre: 'Psychological'
-      },
-      {
-        id: 29,
-        title: 'Forest Tales',
-        image: 'https://picsum.photos/seed/new5/300/450',
-        year: 2024,
-        rating: '7.4',
-        genre: 'Animation'
-      },
-      {
-        id: 30,
-        title: 'Speed Racers',
-        image: 'https://picsum.photos/seed/new6/300/450',
-        year: 2024,
-        rating: '8.3',
-        genre: 'Sports'
-      },
-      {
-        id: 31,
-        title: 'Haunted',
-        image: 'https://picsum.photos/seed/new7/300/450',
-        year: 2024,
-        rating: '7.6',
-        genre: 'Horror'
-      },
-      {
-        id: 32,
-        title: 'Royal Affairs',
-        image: 'https://picsum.photos/seed/new8/300/450',
-        year: 2024,
-        rating: '8.0',
-        genre: 'Period Drama'
-      }
-    ]
+    items: generateItems('newrelease', 300, 20, ['Thriller', 'Romance', 'Action', 'Horror', 'Animation'])
   },
   documentaries: {
     title: 'Documentaries',
-    items: [
-      {
-        id: 33,
-        title: 'Planet Earth',
-        image: 'https://picsum.photos/seed/doc1/300/450',
-        year: 2023,
-        rating: '9.5',
-        genre: 'Nature'
-      },
-      {
-        id: 34,
-        title: 'Human Mind',
-        image: 'https://picsum.photos/seed/doc2/300/450',
-        year: 2024,
-        rating: '8.9',
-        genre: 'Science'
-      },
-      {
-        id: 35,
-        title: 'World War Stories',
-        image: 'https://picsum.photos/seed/doc3/300/450',
-        year: 2023,
-        rating: '8.7',
-        genre: 'History'
-      },
-      {
-        id: 36,
-        title: 'Tech Revolution',
-        image: 'https://picsum.photos/seed/doc4/300/450',
-        year: 2024,
-        rating: '8.4',
-        genre: 'Technology'
-      },
-      {
-        id: 37,
-        title: 'Ocean Life',
-        image: 'https://picsum.photos/seed/doc5/300/450',
-        year: 2023,
-        rating: '9.0',
-        genre: 'Marine'
-      },
-      {
-        id: 38,
-        title: 'Sports Legends',
-        image: 'https://picsum.photos/seed/doc6/300/450',
-        year: 2024,
-        rating: '8.2',
-        genre: 'Sports'
-      },
-      {
-        id: 39,
-        title: 'Art Masters',
-        image: 'https://picsum.photos/seed/doc7/300/450',
-        year: 2023,
-        rating: '7.8',
-        genre: 'Art'
-      },
-      {
-        id: 40,
-        title: 'Space Exploration',
-        image: 'https://picsum.photos/seed/doc8/300/450',
-        year: 2024,
-        rating: '9.1',
-        genre: 'Space'
-      }
-    ]
+    items: generateItems('documentary', 400, 20, ['Nature', 'Science', 'History', 'Technology', 'Sports'])
+  }
+};
+
+// Movie page data with genre-specific content
+export const movieData = {
+  action: {
+    title: 'Action & Adventure',
+    items: generateItems('action', 500, 20, ['Action', 'Adventure', 'Thriller'])
+  },
+  comedy: {
+    title: 'Comedy',
+    items: generateItems('comedy', 600, 20, ['Comedy', 'Rom-Com', 'Satire'])
+  },
+  drama: {
+    title: 'Drama',
+    items: generateItems('drama', 700, 20, ['Drama', 'Period', 'Biography'])
+  },
+  thriller: {
+    title: 'Thriller',
+    items: generateItems('thriller', 800, 20, ['Thriller', 'Mystery', 'Suspense'])
+  },
+  scifi: {
+    title: 'Sci-Fi & Fantasy',
+    items: generateItems('scifi', 900, 20, ['Sci-Fi', 'Fantasy', 'Dystopia'])
+  },
+  horror: {
+    title: 'Horror',
+    items: generateItems('horror', 1000, 20, ['Horror', 'Supernatural', 'Slasher'])
+  }
+};
+
+// TV Shows page data
+export const tvShowsData = {
+  trending: {
+    title: 'Trending TV Shows',
+    items: generateItems('tvtrend', 1100, 20, ['Drama', 'Crime', 'Medical', 'Legal', 'Thriller'])
+  },
+  bingeWorthy: {
+    title: 'Binge-Worthy',
+    items: generateItems('binge', 1200, 20, ['Drama', 'Crime', 'Adventure', 'Thriller', 'Biography'])
+  },
+  comedy: {
+    title: 'Comedy Series',
+    items: generateItems('sitcom', 1300, 20, ['Comedy', 'Rom-Com', 'Satire', 'Workplace'])
+  },
+  scifi: {
+    title: 'Sci-Fi & Fantasy Series',
+    items: generateItems('scifitv', 1400, 20, ['Sci-Fi', 'Fantasy', 'Superhero', 'Dystopia'])
+  },
+  crime: {
+    title: 'Crime & Mystery',
+    items: generateItems('crime', 1500, 20, ['Crime', 'Mystery', 'Procedural', 'Noir'])
+  }
+};
+
+// My List page data
+export const myListData = {
+  continueWatching: {
+    title: 'Continue Watching',
+    items: generateItems('continue', 1600, 15, ['Drama', 'Crime', 'Thriller', 'Sci-Fi', 'Action'])
+  },
+  myList: {
+    title: 'My List',
+    items: generateItems('mylist', 1700, 20, ['Action', 'Sci-Fi', 'Thriller', 'Drama', 'Adventure'])
+  },
+  recentlyAdded: {
+    title: 'Recently Added to List',
+    items: generateItems('recent', 1800, 18, ['Thriller', 'Romance', 'Action', 'Psychological', 'Animation'])
+  },
+  watchAgain: {
+    title: 'Watch Again',
+    items: generateItems('again', 1900, 16, ['Romance', 'Action', 'Drama', 'Thriller', 'Comedy'])
   }
 };

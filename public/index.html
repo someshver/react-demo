@@ -2,10 +2,52 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="React OTT Application with Spatial Navigation" />
-    <title>OTT Demo - Streaming App</title>
+    <meta name="viewport" content="width=1920, initial-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#141414" />
+    <meta name="description" content="StreamFlix - Smart TV OTT Application" />
+
+    <!-- TV Platform Specific Meta Tags -->
+    <meta name="application-name" content="StreamFlix" />
+    <meta name="msapplication-TileColor" content="#141414" />
+
+    <!-- Tizen TV -->
+    <meta name="tizen-app-id" content="streamflix.demo" />
+
+    <!-- LG webOS -->
+    <meta name="webos-app-id" content="com.streamflix.demo" />
+
+    <!-- Prevent zoom and ensure full screen -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <title>StreamFlix - Smart TV</title>
+
+    <style>
+      /* Prevent text selection on TV */
+      * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* Ensure smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Hide scrollbars for TV */
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      body {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        overflow: hidden;
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
