@@ -2,7 +2,7 @@ import React from 'react';
 import { useFocusable, FocusContext } from '@noriginmedia/norigin-spatial-navigation';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-function NavItem({ path, label, onFocus }) {
+function NavItem({ path, label, onFocus, focusKey }) {
   const navigate = useNavigate();
   const location = useLocation();
   const isActive = location.pathname === path;
@@ -11,7 +11,8 @@ function NavItem({ path, label, onFocus }) {
     onEnterPress: () => {
       navigate(path);
     },
-    onFocus
+    onFocus,
+    focusKey
   });
 
   return (
@@ -39,10 +40,10 @@ function Navigation() {
       <header className="app-header">
         <div className="logo">StreamFlix</div>
         <nav ref={ref} className="nav-menu">
-          <NavItem path="/" label="Home" />
-          <NavItem path="/movies" label="Movies" />
-          <NavItem path="/tv-shows" label="TV Shows" />
-          <NavItem path="/my-list" label="My List" />
+          <NavItem path="/" label="Home" focusKey="NAV_HOME" />
+          <NavItem path="/movies" label="Movies" focusKey="NAV_MOVIES" />
+          <NavItem path="/tv-shows" label="TV Shows" focusKey="NAV_TVSHOWS" />
+          <NavItem path="/my-list" label="My List" focusKey="NAV_MYLIST" />
         </nav>
         <div className="user-section">
           <span className="search-icon">Search</span>

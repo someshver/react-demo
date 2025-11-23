@@ -3,6 +3,24 @@ import { useFocusable, FocusContext } from '@noriginmedia/norigin-spatial-naviga
 import { demoData } from '../data/demoData';
 import ContentRow from '../components/ContentRow';
 
+function HeroButton({ label, focusKey, className, onClick }) {
+  const { ref, focused } = useFocusable({
+    focusKey,
+    onEnterPress: onClick
+  });
+
+  return (
+    <button
+      ref={ref}
+      className={`${className} ${focused ? 'focused' : ''}`}
+      onClick={onClick}
+      data-focusable="true"
+    >
+      {label}
+    </button>
+  );
+}
+
 function HomePage() {
   const { ref, focusKey } = useFocusable({
     focusable: false,
@@ -20,8 +38,18 @@ function HomePage() {
             <h1>Welcome to StreamFlix</h1>
             <p>Watch unlimited movies, TV shows, and more.</p>
             <div className="hero-buttons">
-              <button className="btn-play">Play</button>
-              <button className="btn-info">More Info</button>
+              <HeroButton
+                label="Play"
+                focusKey="HERO_PLAY"
+                className="btn-play"
+                onClick={() => console.log('Play clicked')}
+              />
+              <HeroButton
+                label="More Info"
+                focusKey="HERO_INFO"
+                className="btn-info"
+                onClick={() => console.log('More Info clicked')}
+              />
             </div>
           </div>
         </section>

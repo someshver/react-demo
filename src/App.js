@@ -40,12 +40,12 @@ function AppContent() {
   // Get the default focus key based on current route
   const getDefaultFocusKey = useCallback(() => {
     const path = location.pathname;
-    if (path === '/') return 'card-1';
-    if (path === '/movies') return 'card-500';
-    if (path === '/tv-shows') return 'card-1100';
-    if (path === '/my-list') return 'card-1600';
+    if (path === '/') return 'NAV_HOME';
+    if (path === '/movies') return 'NAV_MOVIES';
+    if (path === '/tv-shows') return 'NAV_TVSHOWS';
+    if (path === '/my-list') return 'NAV_MYLIST';
     if (path.startsWith('/detail/')) return 'DETAIL_PAGE';
-    return 'card-1';
+    return 'NAV_HOME';
   }, [location.pathname]);
 
   // Set focus when app mounts
