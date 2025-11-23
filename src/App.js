@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import {
   init,
@@ -25,6 +25,8 @@ init({
 function AppContent() {
   const navigate = useNavigate();
   const location = useLocation();
+  const previousFocusKeyRef = useRef(null);
+  const wasOnDetailPageRef = useRef(false);
 
   const { ref, focusKey } = useFocusable({
     focusable: false,
@@ -38,12 +40,12 @@ function AppContent() {
   // Get the default focus key based on current route
   const getDefaultFocusKey = useCallback(() => {
     const path = location.pathname;
-    if (path === '/') return 'home-trending';
-    if (path === '/movies') return 'movies-action';
-    if (path === '/tv-shows') return 'tv-trending';
-    if (path === '/my-list') return 'mylist-continue';
+    if (path === '/') return 'card-1';
+    if (path === '/movies') return 'card-500';
+    if (path === '/tv-shows') return 'card-1100';
+    if (path === '/my-list') return 'card-1600';
     if (path.startsWith('/detail/')) return 'DETAIL_PAGE';
-    return 'home-trending';
+    return 'card-1';
   }, [location.pathname]);
 
   // Set focus when app mounts
@@ -52,18 +54,41 @@ function AppContent() {
       setFocus(getDefaultFocusKey());
     }, 300);
     return () => clearTimeout(timer);
-  }, [getDefaultFocusKey]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Handle focus when route changes
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const currentFocus = getCurrentFocusKey();
-      if (!currentFocus || currentFocus === 'APP_ROOT') {
-        setFocus(getDefaultFocusKey());
-      }
-    }, 200);
-    return () => clearTimeout(timer);
-  }, [location.pathname, getDefaultFocusKey]);
+    const isOnDetailPage = location.pathname.startsWith('/detail/');
+
+    // Save previous focus key when navigating to detail
+    if (isOnDetailPage && location.state?.previousFocusKey) {
+      previousFocusKeyRef.current = location.state.previousFocusKey;
+    }
+
+    // Restore focus when coming back from detail page
+    if (wasOnDetailPageRef.current && !isOnDetailPage) {
+      const timer = setTimeout(() => {
+        if (previousFocusKeyRef.current) {
+          setFocus(previousFocusKeyRef.current);
+          previousFocusKeyRef.current = null;
+        } else {
+          setFocus(getDefaultFocusKey());
+        }
+      }, 300);
+      wasOnDetailPageRef.current = false;
+      return () => clearTimeout(timer);
+    }
+
+    // Set focus for detail page
+    if (isOnDetailPage) {
+      wasOnDetailPageRef.current = true;
+      const timer = setTimeout(() => {
+        setFocus('DETAIL_PAGE');
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname, location.state, getDefaultFocusKey]);
 
   // Global key handler for focus management and back button
   useEffect(() => {

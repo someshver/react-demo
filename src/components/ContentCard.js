@@ -1,12 +1,19 @@
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
+import { useFocusable, getCurrentFocusKey } from '@noriginmedia/norigin-spatial-navigation';
 
 function ContentCard({ item, onFocus }) {
   const navigate = useNavigate();
 
   const handleSelect = useCallback(() => {
-    navigate(`/detail/${item.id}`, { state: { item } });
+    // Save current focus key before navigating
+    const currentFocusKey = getCurrentFocusKey();
+    navigate(`/detail/${item.id}`, {
+      state: {
+        item,
+        previousFocusKey: currentFocusKey
+      }
+    });
   }, [navigate, item]);
 
   const { ref, focused } = useFocusable({

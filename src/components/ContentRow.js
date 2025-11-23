@@ -1,16 +1,14 @@
 import React, { useRef, useCallback } from 'react';
-import { useFocusable, FocusContext } from '@noriginmedia/norigin-spatial-navigation';
+import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import ContentCard from './ContentCard';
 
 function ContentRow({ title, items, rowId }) {
   const scrollContainerRef = useRef(null);
   const rowElementRef = useRef(null);
 
-  const { ref, focusKey } = useFocusable({
+  const { ref } = useFocusable({
     focusable: false,
-    saveLastFocusedChild: true,
     trackChildren: true,
-    autoRestoreFocus: true,
     isFocusBoundary: false,
     focusKey: rowId
   });
@@ -43,20 +41,18 @@ function ContentRow({ title, items, rowId }) {
   }, []);
 
   return (
-    <FocusContext.Provider value={focusKey}>
-      <div ref={setRefs} className="content-row">
-        <h2 className="row-title">{title}</h2>
-        <div className="row-content" ref={scrollContainerRef}>
-          {items.map((item) => (
-            <ContentCard
-              key={item.id}
-              item={item}
-              onFocus={onCardFocus}
-            />
-          ))}
-        </div>
+    <div ref={setRefs} className="content-row">
+      <h2 className="row-title">{title}</h2>
+      <div className="row-content" ref={scrollContainerRef}>
+        {items.map((item) => (
+          <ContentCard
+            key={item.id}
+            item={item}
+            onFocus={onCardFocus}
+          />
+        ))}
       </div>
-    </FocusContext.Provider>
+    </div>
   );
 }
 
