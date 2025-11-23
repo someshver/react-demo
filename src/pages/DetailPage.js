@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useFocusable, FocusContext } from '@noriginmedia/norigin-spatial-navigation';
 
@@ -32,19 +32,6 @@ function DetailPage() {
     trackChildren: true,
     focusKey: 'DETAIL_PAGE'
   });
-
-  // Handle back button for TV remotes
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Backspace' || e.key === 'XF86Back' || e.keyCode === 10009) {
-        e.preventDefault();
-        navigate(-1);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [navigate]);
 
   if (!item) {
     return (
