@@ -1,6 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { init, useFocusable, FocusContext, setFocus } from '@noriginmedia/norigin-spatial-navigation';
+import {
+  init,
+  useFocusable,
+  FocusContext,
+  setFocus,
+  getCurrentFocusKey
+} from '@noriginmedia/norigin-spatial-navigation';
 import Navigation from './components/Navigation';
 import HomePage from './pages/HomePage';
 import MoviesPage from './pages/MoviesPage';
@@ -12,78 +18,112 @@ import DetailPage from './pages/DetailPage';
 init({
   debug: false,
   visualDebug: false,
-  distanceCalculationMethod: 'center'
+  distanceCalculationMethod: 'center',
+  straightOverlapThreshold: 0.5
 });
 
 function AppContent() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { ref, focusKey, focusSelf } = useFocusable({
+  const { ref, focusKey } = useFocusable({
     focusable: false,
     saveLastFocusedChild: true,
     trackChildren: true,
     autoRestoreFocus: true,
-    isFocusBoundary: false
+    isFocusBoundary: false,
+    focusKey: 'APP_ROOT'
   });
 
-  // Set focus when app mounts or route changes
+  // Get the default focus key based on current route
+  const getDefaultFocusKey = useCallback(() => {
+    const path = location.pathname;
+    if (path === '/') return 'home-trending';
+    if (path === '/movies') return 'movies-action';
+    if (path === '/tv-shows') return 'tv-trending';
+    if (path === '/my-list') return 'mylist-continue';
+    if (path.startsWith('/detail/')) return 'DETAIL_PAGE';
+    return 'home-trending';
+  }, [location.pathname]);
+
+  // Set focus when app mounts
   useEffect(() => {
     const timer = setTimeout(() => {
-      // Try to focus the first content card in the first row
-      setFocus('home-trending');
+      setFocus(getDefaultFocusKey());
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [getDefaultFocusKey]);
+
+  // Handle focus when route changes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const currentFocus = getCurrentFocusKey();
+      if (!currentFocus || currentFocus === 'APP_ROOT') {
+        setFocus(getDefaultFocusKey());
+      }
     }, 200);
     return () => clearTimeout(timer);
-  }, []);
+  }, [location.pathname, getDefaultFocusKey]);
 
-  // Refocus when route changes
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      focusSelf();
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [location.pathname, focusSelf]);
-
-  // Handle TV remote back button
+  // Global key handler for focus management and back button
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Handle various TV remote back button key codes
-      // Samsung Tizen: 10009 (XF86Back)
-      // LG webOS: 461 (GoBack)
-      // Standard: Backspace, Escape
+      const arrowKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+
+      // Restore focus if lost when arrow key is pressed
+      if (arrowKeys.includes(e.key)) {
+        const currentFocus = getCurrentFocusKey();
+        if (!currentFocus || currentFocus === 'APP_ROOT' || currentFocus === '') {
+          e.preventDefault();
+          setFocus(getDefaultFocusKey());
+          return;
+        }
+      }
+
+      // Handle back button
       const backKeys = ['Backspace', 'Escape', 'XF86Back', 'GoBack'];
-      const backKeyCodes = [10009, 461, 27]; // 27 is Escape keyCode
+      const backKeyCodes = [10009, 461, 27];
 
       if (backKeys.includes(e.key) || backKeyCodes.includes(e.keyCode)) {
-        // Handle back on detail page
         if (location.pathname.startsWith('/detail/')) {
           e.preventDefault();
           navigate(-1);
         }
       }
 
-      // Handle TV remote color buttons (optional features)
+      // Handle TV remote color buttons
       switch (e.keyCode) {
-        case 403: // Red button
-          console.log('Red button pressed - Could show info');
-          break;
-        case 404: // Green button
-          console.log('Green button pressed - Could add to list');
-          break;
-        case 405: // Yellow button
-          console.log('Yellow button pressed - Could show search');
-          break;
-        case 406: // Blue button
-          console.log('Blue button pressed - Could show settings');
-          break;
-        default:
-          break;
+        case 403: console.log('Red button'); break;
+        case 404: console.log('Green button'); break;
+        case 405: console.log('Yellow button'); break;
+        case 406: console.log('Blue button'); break;
+        default: break;
+      }
+    };
+
+    // Prevent focus loss on click outside focusable elements
+    const handleClick = (e) => {
+      // Check if clicked element is focusable
+      const isFocusable = e.target.closest('[data-focusable="true"]');
+      if (!isFocusable) {
+        // Restore focus after a brief delay
+        setTimeout(() => {
+          const currentFocus = getCurrentFocusKey();
+          if (!currentFocus || currentFocus === 'APP_ROOT' || currentFocus === '') {
+            setFocus(getDefaultFocusKey());
+          }
+        }, 100);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [navigate, location.pathname]);
+    document.addEventListener('click', handleClick);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('click', handleClick);
+    };
+  }, [navigate, location.pathname, getDefaultFocusKey]);
 
   return (
     <FocusContext.Provider value={focusKey}>
@@ -102,7 +142,7 @@ function AppContent() {
 
         <footer className="app-footer">
           <p>StreamFlix Demo - Smart TV Application</p>
-          <p className="footer-hint">Use arrow keys to navigate, Enter/OK to select, Back to return</p>
+          <p className="footer-hint">Use arrow keys to navigate, Enter/OK to select, ESC to go back</p>
         </footer>
       </div>
     </FocusContext.Provider>
