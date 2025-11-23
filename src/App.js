@@ -51,11 +51,11 @@ function AppContent() {
       // Samsung Tizen: 10009 (XF86Back)
       // LG webOS: 461 (GoBack)
       // Standard: Backspace, Escape
-      const backKeys = ['Backspace', 'XF86Back', 'GoBack'];
-      const backKeyCodes = [10009, 461];
+      const backKeys = ['Backspace', 'Escape', 'XF86Back', 'GoBack'];
+      const backKeyCodes = [10009, 461, 27]; // 27 is Escape keyCode
 
       if (backKeys.includes(e.key) || backKeyCodes.includes(e.keyCode)) {
-        // Only handle back on detail page
+        // Handle back on detail page
         if (location.pathname.startsWith('/detail/')) {
           e.preventDefault();
           navigate(-1);

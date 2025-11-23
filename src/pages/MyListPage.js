@@ -8,6 +8,7 @@ function MyListPage() {
     focusable: false,
     saveLastFocusedChild: true,
     trackChildren: true,
+    isFocusBoundary: false,
     focusKey: 'MYLIST_PAGE'
   });
 

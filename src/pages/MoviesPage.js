@@ -8,6 +8,7 @@ function MoviesPage() {
     focusable: false,
     saveLastFocusedChild: true,
     trackChildren: true,
+    isFocusBoundary: false,
     focusKey: 'MOVIES_PAGE'
   });
 

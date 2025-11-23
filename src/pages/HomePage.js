@@ -8,6 +8,7 @@ function HomePage() {
     focusable: false,
     saveLastFocusedChild: true,
     trackChildren: true,
+    isFocusBoundary: false,
     focusKey: 'HOME_PAGE'
   });
 
