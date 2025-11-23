@@ -20,10 +20,10 @@ function ContentCard({ item, onFocus }) {
     onEnterPress: handleSelect,
     onFocus: ({ x, y, node }) => {
       onFocus({ x, y });
-      // Scroll the card into view when focused
+      // Scroll the card into view when focused - use auto for sync with focus
       if (node) {
         node.scrollIntoView({
-          behavior: 'smooth',
+          behavior: 'auto',
           block: 'nearest',
           inline: 'center'
         });

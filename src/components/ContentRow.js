@@ -24,17 +24,17 @@ function ContentRow({ title, items, rowId }) {
   }, [ref]);
 
   const onCardFocus = useCallback(({ x }) => {
-    // Horizontal scroll within the row
+    // Horizontal scroll within the row - use instant for sync with focus
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTo({
         left: x - 150,
-        behavior: 'smooth'
+        behavior: 'auto'
       });
     }
     // Vertical scroll to keep row in view
     if (rowElementRef.current) {
       rowElementRef.current.scrollIntoView({
-        behavior: 'smooth',
+        behavior: 'auto',
         block: 'nearest'
       });
     }

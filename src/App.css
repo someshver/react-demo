@@ -158,6 +158,21 @@ body {
   background-color: rgba(109, 109, 110, 0.5);
 }
 
+.btn-play.focused,
+.btn-info.focused {
+  outline: 3px solid #e50914;
+  outline-offset: 2px;
+  transform: scale(1.05);
+}
+
+.btn-play.focused {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.btn-info.focused {
+  background-color: rgba(109, 109, 110, 0.9);
+}
+
 /* Content rows */
 .content-rows {
   padding: 0 50px 50px;
@@ -179,7 +194,7 @@ body {
   gap: 15px;
   overflow-x: auto;
   padding: 10px 0;
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
